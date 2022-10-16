@@ -1,42 +1,47 @@
 const deckContainer = document.querySelector("#deck-container")
 
-fetchDataByUrl(BASE_URL + "deck/all").then (data => {
-    renderDecks(data);
+fetchDataByUrl(BASE_URL + "deck/all").then (decks => {
+    renderDecks(decks);
     
 
 })
 
-const renderDecks = data => {
+const renderDecks = decks => {
 
-    console.log(data);
-    for (var i = 0; i < data.length; i++) {
+    console.log(decks);
+    for (var i = 0; i < decks.length; i++) {
          
          let deckEle = document.createElement('div');
          deckEle.classList.add('deck');
-         deckEle.addEventListener("click", e => {
-            // Hvad sker der her?? hvorfor er den ene et object, men den anden undefined??
-            console.log(data);
-            console.log(data[i])
-           
-         });
-    
+       
         let deckNameEle = document.createElement('p');
         deckNameEle.classList.add('text')
-        deckNameEle.textContent = data[i].name;
+        deckNameEle.textContent = decks[i].name;
         deckEle.appendChild(deckNameEle);
         
         let deckCategoryEle = document.createElement('p');
         deckCategoryEle.classList.add('text')
-        deckCategoryEle.textContent = data[i].category;
+        deckCategoryEle.textContent = decks[i].category;
         deckEle.appendChild(deckCategoryEle);
         
         deckContainer.appendChild(deckEle); 
         
         console.log(deckEle);
         }
+        deckElements = document.querySelectorAll('.deck');
+        console.log(deckElements);
+        addEventListenersToDeckElements(deckElements);
     
     
 
 }
+
+var addEventListenersToDeckElements = (deckElements => {
+    deckElements.forEach(function(deckEle, index) {
+        deckEle.addEventListener('click', () => {
+            getFlashcards(data[index]);
+        })
+    })
+    });
 
 
