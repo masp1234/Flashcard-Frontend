@@ -1,4 +1,4 @@
-const deckContainer = document.querySelector("#deck-container")
+const itemContainer = document.querySelector("#item-container")
 
 fetchDataByUrl(BASE_URL + "deck/all").then (decks => {
     renderDecks(decks);
@@ -24,22 +24,22 @@ const renderDecks = decks => {
         deckCategoryEle.textContent = decks[i].category;
         deckEle.appendChild(deckCategoryEle);
         
-        deckContainer.appendChild(deckEle); 
+        itemContainer.appendChild(deckEle); 
         
         console.log(deckEle);
         }
         deckElements = document.querySelectorAll('.deck');
         console.log(deckElements);
-        addEventListenersToDeckElements(deckElements);
+        addEventListenersToDeckElements(deckElements, decks);
     
     
 
 }
 
-var addEventListenersToDeckElements = (deckElements => {
+var addEventListenersToDeckElements = ((deckElements, decks) => {
     deckElements.forEach(function(deckEle, index) {
         deckEle.addEventListener('click', () => {
-            getFlashcards(data[index]);
+            getFlashcards(decks[index]);
         })
     })
     });

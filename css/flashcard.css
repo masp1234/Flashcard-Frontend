@@ -1,0 +1,15 @@
+
+
+.flashcard {
+    
+    display: flex;
+    flex-direction: column;
+    background-color: antiquewhite;
+    
+    align-items: flex-start;
+    background-image: url("../images/flashcard.png");
+    background-size: 100% 100%;
+}
+.flashcard-image {
+    width: 230px;
+}
