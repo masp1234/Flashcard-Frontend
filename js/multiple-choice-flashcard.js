@@ -1,3 +1,7 @@
+let playerPoints = 0;
+
+let numberOfWrongAnswers = 4;
+
 
 function createMultipleChoiceButton() {
     const activateMultipleChoiceButton = document.createElement('button');
@@ -5,7 +9,6 @@ function createMultipleChoiceButton() {
     container.appendChild(activateMultipleChoiceButton);
 
     activateMultipleChoiceButton.addEventListener("click", () => {
-        alert('hello');
         itemContainer.replaceChildren();
 
         flashcards.forEach(flashcard => {
@@ -18,43 +21,50 @@ function createMultipleChoiceButton() {
     
             flashcardEle.appendChild(flashcardQuestionTextEle);
 
-            let listOfAnswers = getListOfAnswers(4);
+            let listOfAnswers = getListOfAnswers(numberOfWrongAnswers, flashcard.answerText);
             listOfAnswers.forEach(answer => {
-                answerElement = document.createElement('p');
+                const answerElement = document.createElement('p');
+                
                 answerElement.classList.add('text');
+                answerElement.classList.add('answer');
                 answerElement.textContent = answer;
+
+                answerElement.addEventListener('click', () => {
+                    let answer = answerElement.textContent;
+                    if (answer === flashcard.answerText) {
+                        playerPoints += flashcard.points;
+                        console.log(playerPoints);
+                        flashcardEle.remove();
+
+                    }
+                })
                 
                 flashcardEle.appendChild(answerElement);
             })
+            
+            
         
 
             itemContainer.appendChild(flashcardEle);
         })
-
-            /* flashcardElements.forEach(flashcardEle => {
-                if (flashcardEle.classList.contains('not-flipped')) {
-                    flashcardEle.classList.replace('not-flipped', 'multiple-choice-activated');
-    
-                }
-                else {
-                    flashcardEle.classList.replace('flipped', 'multiple-choice-activated');
-                }
-                console.log(flashcardEle);
-            }) */
-            
-
         });
 }
 
-function getListOfAnswers(numberOfAnswers) {
+function getListOfAnswers(numberOfAnswers, rightAnswer) {
     let listOfAnswers = new Set();
+    listOfAnswers.add(rightAnswer);
 
     while (listOfAnswers.size < numberOfAnswers) {
         let randomNumber = Math.floor(Math.random() * flashcards.length);
         listOfAnswers.add(flashcards[randomNumber].answerText);
-        console.log(randomNumber);
+        
     }
     
-    return listOfAnswers;
+
+    // får et array fra settet, "shuffler" arrayet og returnerer til sidst
+    
+    return Array.from(listOfAnswers).sort(
+        () => Math.random() - 0.5);
 }
+
 

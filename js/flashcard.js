@@ -4,7 +4,7 @@ let flashcards = []
 
 
 
-var getFlashcards = deck => {
+const getFlashcards = deck => {
     itemContainer.replaceChildren();
 
     createMultipleChoiceButton();
