@@ -1,7 +1,18 @@
+let flashcardElements = []
+
+let flashcards = []
+
+
+
 var getFlashcards = deck => {
     itemContainer.replaceChildren();
 
+    createMultipleChoiceButton();
+
     deck.flashcards.forEach(flashcard => {
+
+        flashcards.push(flashcard);
+
         const flashcardEle = document.createElement('div');
         flashcardEle.classList.add('flashcard');
         flashcardEle.classList.add('not-flipped');
@@ -14,18 +25,14 @@ var getFlashcards = deck => {
         
         const flashcardPointsEle = document.createElement('p');
         flashcardPointsEle.classList.add('text');
-
-        const activateMultipleChoiceButton = document.createElement('button');
-        activateMultipleChoiceButton.addEventListener("click", activateMultipleChoice);
-
+    
         flashcardQuestionTextEle.textContent = flashcard.questionText;
         flashcardAnswerTextEle.textContent = flashcard.answerText;
         flashcardPointsEle.textContent = flashcard.points;
 
         flashcardEle.appendChild(flashcardQuestionTextEle);
         flashcardEle.appendChild(flashcardPointsEle);
-        
-        
+
         itemContainer.appendChild(flashcardEle);
 
         flashcardEle.addEventListener("click", () => {
@@ -34,17 +41,18 @@ var getFlashcards = deck => {
                 flashcardEle.classList.replace('not-flipped', 'flipped');
                 
             }
-            else {
+            else if (flashcardEle.classList.contains('flipped')) {
                 flashcardEle.replaceChild(flashcardQuestionTextEle, flashcardAnswerTextEle);
                 flashcardEle.classList.replace('flipped', 'not-flipped');
                 
             }
-
         })
-    } ) 
+
+        flashcardElements.push(flashcardEle); 
+    } )
+
+    console.log(flashcards);
+    
     
 }
 
-const activateMultipleChoice = () => {
-    
-}

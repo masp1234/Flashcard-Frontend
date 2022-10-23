@@ -1,5 +1,7 @@
 const itemContainer = document.querySelector("#item-container")
 
+const container = document.querySelector('.container');
+
 fetchDataByUrl(BASE_URL + "deck/all").then (decks => {
     renderDecks(decks);
     
@@ -8,7 +10,7 @@ fetchDataByUrl(BASE_URL + "deck/all").then (decks => {
 
 const renderDecks = decks => {
 
-    console.log(decks);
+    
     for (var i = 0; i < decks.length; i++) {
          
          let deckEle = document.createElement('div');
@@ -26,10 +28,9 @@ const renderDecks = decks => {
         
         itemContainer.appendChild(deckEle); 
         
-        console.log(deckEle);
+        
         }
         deckElements = document.querySelectorAll('.deck');
-        console.log(deckElements);
         addEventListenersToDeckElements(deckElements, decks);
     
     
