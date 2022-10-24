@@ -1,17 +1,25 @@
-let playerPoints = 0;
+class MultipleChoiceRenderer{
+    constructor(flashcards) {
+        this.flashcards = flashcards;
+        this.createMultipleChoiceButton();
 
-let numberOfWrongAnswers = 4;
+    }
+
+itemContainer = document.querySelector("#item-container")
+container = document.querySelector('.container');
+playerPoints = 0;
+numberOfWrongAnswers = 4;
 
 
-function createMultipleChoiceButton() {
+createMultipleChoiceButton() {
     const activateMultipleChoiceButton = document.createElement('button');
     activateMultipleChoiceButton.id = 'activate-multiple-choice-button';
-    container.appendChild(activateMultipleChoiceButton);
+    this.container.appendChild(activateMultipleChoiceButton);
 
     activateMultipleChoiceButton.addEventListener("click", () => {
-        itemContainer.replaceChildren();
+        this.itemContainer.replaceChildren();
 
-        flashcards.forEach(flashcard => {
+        this.flashcards.forEach(flashcard => {
             const flashcardEle = document.createElement('div');
             flashcardEle.classList.add('flashcard');
 
@@ -21,7 +29,7 @@ function createMultipleChoiceButton() {
     
             flashcardEle.appendChild(flashcardQuestionTextEle);
 
-            let listOfAnswers = getListOfAnswers(numberOfWrongAnswers, flashcard.answerText);
+            let listOfAnswers = this.getListOfAnswers(this.numberOfWrongAnswers, flashcard.answerText);
             listOfAnswers.forEach(answer => {
                 const answerElement = document.createElement('p');
                 
@@ -32,8 +40,8 @@ function createMultipleChoiceButton() {
                 answerElement.addEventListener('click', () => {
                     let answer = answerElement.textContent;
                     if (answer === flashcard.answerText) {
-                        playerPoints += flashcard.points;
-                        console.log(playerPoints);
+                        this.playerPoints += flashcard.points;
+                        console.log(this.playerPoints);
                         flashcardEle.remove();
 
                     }
@@ -45,18 +53,18 @@ function createMultipleChoiceButton() {
             
         
 
-            itemContainer.appendChild(flashcardEle);
+            this.itemContainer.appendChild(flashcardEle);
         })
         });
 }
 
-function getListOfAnswers(numberOfAnswers, rightAnswer) {
+getListOfAnswers(numberOfAnswers, rightAnswer) {
     let listOfAnswers = new Set();
     listOfAnswers.add(rightAnswer);
 
     while (listOfAnswers.size < numberOfAnswers) {
-        let randomNumber = Math.floor(Math.random() * flashcards.length);
-        listOfAnswers.add(flashcards[randomNumber].answerText);
+        let randomNumber = Math.floor(Math.random() * this.flashcards.length);
+        listOfAnswers.add(this.flashcards[randomNumber].answerText);
         
     }
     
@@ -65,6 +73,9 @@ function getListOfAnswers(numberOfAnswers, rightAnswer) {
     
     return Array.from(listOfAnswers).sort(
         () => Math.random() - 0.5);
+}
+
+
 }
 
 

@@ -1,17 +1,26 @@
-let flashcardElements = []
+'use strict'
 
-let flashcards = []
+class FlashcardRenderer {
+
+constructor() {
+}
+flashcardElements = []
+flashcards = []
+itemContainer = document.querySelector('#item-container');
 
 
 
-const getFlashcards = deck => {
-    itemContainer.replaceChildren();
 
-    createMultipleChoiceButton();
+
+
+
+
+getFlashcards = deck => {
+    this.itemContainer.replaceChildren();
 
     deck.flashcards.forEach(flashcard => {
 
-        flashcards.push(flashcard);
+        this.flashcards.push(flashcard);
 
         const flashcardEle = document.createElement('div');
         flashcardEle.classList.add('flashcard');
@@ -33,7 +42,7 @@ const getFlashcards = deck => {
         flashcardEle.appendChild(flashcardQuestionTextEle);
         flashcardEle.appendChild(flashcardPointsEle);
 
-        itemContainer.appendChild(flashcardEle);
+        this.itemContainer.appendChild(flashcardEle);
 
         flashcardEle.addEventListener("click", () => {
             if (flashcardEle.classList.contains('not-flipped')) {
@@ -48,11 +57,12 @@ const getFlashcards = deck => {
             }
         })
 
-        flashcardElements.push(flashcardEle); 
+        this.flashcardElements.push(flashcardEle); 
     } )
 
-    console.log(flashcards);
+    console.log(this.flashcards);
+    const multipleChoiceRenderer = new MultipleChoiceRenderer(this.flashcards);
     
     
 }
-
+}

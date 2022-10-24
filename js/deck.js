@@ -1,20 +1,32 @@
-const itemContainer = document.querySelector("#item-container")
+'use strict'
 
-const container = document.querySelector('.container');
+class DeckRenderer {
 
-fetchDataByUrl(BASE_URL + "deck/all").then (decks => {
-    renderDecks(decks);
-    
+    endpointUrl = BASE_URL + "deck/all";
+    constructor() {
+        this.data = this.fetchData();
+    }
 
-})
 
-const renderDecks = decks => {
+
+
+ itemContainer = document.querySelector("#item-container")
+
+ container = document.querySelector('.container');
+
+fetchData() {
+    console.log('hallo?')
+    fetchDataByUrl(this.endpointUrl).then (decks => {
+        this.renderDecks(decks);
+    })
+}
+renderDecks = decks => {
 
     
     for (var i = 0; i < decks.length; i++) {
          
-         let deckEle = document.createElement('div');
-         deckEle.classList.add('deck');
+        let deckEle = document.createElement('div');
+        deckEle.classList.add('deck');
        
         let deckNameEle = document.createElement('p');
         deckNameEle.classList.add('text')
@@ -26,23 +38,30 @@ const renderDecks = decks => {
         deckCategoryEle.textContent = decks[i].category;
         deckEle.appendChild(deckCategoryEle);
         
-        itemContainer.appendChild(deckEle); 
+        this.itemContainer.appendChild(deckEle); 
         
         
         }
-        deckElements = document.querySelectorAll('.deck');
-        addEventListenersToDeckElements(deckElements, decks);
+        const deckElements = document.querySelectorAll('.deck');
+        this.addEventListenersToDeckElements(deckElements, decks);
     
     
 
 }
 
-var addEventListenersToDeckElements = ((deckElements, decks) => {
+addEventListenersToDeckElements = (deckElements, decks) => {
     deckElements.forEach(function(deckEle, index) {
         deckEle.addEventListener('click', () => {
-            getFlashcards(decks[index]);
+            const flashcardRenderer = new FlashcardRenderer();
+            flashcardRenderer.getFlashcards(decks[index]);
+            
         })
     })
-    });
+    };
+
+}
+
+var deckRenderer = new DeckRenderer();
+console.log(deckRenderer);
 
 
