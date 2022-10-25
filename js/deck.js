@@ -8,12 +8,6 @@ class DeckRenderer {
     }
 
 
-
-
- itemContainer = document.querySelector("#item-container")
-
- container = document.querySelector('.container');
-
 fetchData() {
     console.log('hallo?')
     fetchDataByUrl(this.endpointUrl).then (decks => {
@@ -38,7 +32,7 @@ renderDecks = decks => {
         deckCategoryEle.textContent = decks[i].category;
         deckEle.appendChild(deckCategoryEle);
         
-        this.itemContainer.appendChild(deckEle); 
+        itemContainer.appendChild(deckEle); 
         
         
         }

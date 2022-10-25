@@ -1,3 +1,5 @@
+'use strict'
+
 class MultipleChoiceRenderer{
     constructor(flashcards) {
         this.flashcards = flashcards;
@@ -5,19 +7,24 @@ class MultipleChoiceRenderer{
 
     }
 
-itemContainer = document.querySelector("#item-container")
-container = document.querySelector('.container');
 playerPoints = 0;
-numberOfWrongAnswers = 4;
-
+numberOfAnswers = 4;
 
 createMultipleChoiceButton() {
-    const activateMultipleChoiceButton = document.createElement('button');
-    activateMultipleChoiceButton.id = 'activate-multiple-choice-button';
-    this.container.appendChild(activateMultipleChoiceButton);
+    const multipleChoiceButton = document.createElement('button');
+    multipleChoiceButton.id = 'multiple-choice-button';
+    container.appendChild(multipleChoiceButton);
 
-    activateMultipleChoiceButton.addEventListener("click", () => {
-        this.itemContainer.replaceChildren();
+    this.addEventListenerToMultipleChoiceButton(multipleChoiceButton);
+  
+}
+
+// TODO clean den her del op og lav det om til flere SOLIDE metoder
+
+addEventListenerToMultipleChoiceButton(multipleChoiceButton) {
+    
+    multipleChoiceButton.addEventListener("click", () => {
+        itemContainer.replaceChildren();
 
         this.flashcards.forEach(flashcard => {
             const flashcardEle = document.createElement('div');
@@ -29,15 +36,12 @@ createMultipleChoiceButton() {
     
             flashcardEle.appendChild(flashcardQuestionTextEle);
 
-            let listOfAnswers = this.getListOfAnswers(this.numberOfWrongAnswers, flashcard.answerText);
-            listOfAnswers.forEach(answer => {
-                const answerElement = document.createElement('p');
+            const listOfAnswers = this.getListOfAnswers(this.numberOfAnswers, flashcard.answerText);
+            
+            listOfAnswers.forEach(answer => { 
+            const answerElement = this.createAnswerElement(answer);
                 
-                answerElement.classList.add('text');
-                answerElement.classList.add('answer');
-                answerElement.textContent = answer;
-
-                answerElement.addEventListener('click', () => {
+            answerElement.addEventListener('click', () => {
                     let answer = answerElement.textContent;
                     if (answer === flashcard.answerText) {
                         this.playerPoints += flashcard.points;
@@ -49,13 +53,19 @@ createMultipleChoiceButton() {
                 
                 flashcardEle.appendChild(answerElement);
             })
-            
-            
-        
-
-            this.itemContainer.appendChild(flashcardEle);
+            itemContainer.appendChild(flashcardEle);
         })
         });
+}
+createAnswerElement(answer) {    
+    const answerElement = document.createElement('p');
+                
+    answerElement.classList.add('text');
+    answerElement.classList.add('answer');
+    answerElement.textContent = answer;
+
+    return answerElement;
+    
 }
 
 getListOfAnswers(numberOfAnswers, rightAnswer) {
@@ -74,7 +84,6 @@ getListOfAnswers(numberOfAnswers, rightAnswer) {
     return Array.from(listOfAnswers).sort(
         () => Math.random() - 0.5);
 }
-
 
 }
 

@@ -6,63 +6,57 @@ constructor() {
 }
 flashcardElements = []
 flashcards = []
-itemContainer = document.querySelector('#item-container');
 
 
-
-
-
-
-
+// Find ud af hvorfor flashcards forsvinder efter 2 klik. 
+// Først går de fra not-flipped til flipped, og derefter bliver de væk når man klikker på dem.
+// Prøv at debug
+// note: både spørgsmål og svar vises på samme tid. Tjek tidligere kode på github
 
 getFlashcards = deck => {
-    this.itemContainer.replaceChildren();
+    itemContainer.replaceChildren();
 
     deck.flashcards.forEach(flashcard => {
 
         this.flashcards.push(flashcard);
 
-        const flashcardEle = document.createElement('div');
-        flashcardEle.classList.add('flashcard');
-        flashcardEle.classList.add('not-flipped');
-        
-        const flashcardQuestionTextEle = document.createElement('p');
-        flashcardQuestionTextEle.classList.add('text');
-
-        const flashcardAnswerTextEle = document.createElement('p');
-        flashcardAnswerTextEle.classList.add('text');
-        
-        const flashcardPointsEle = document.createElement('p');
-        flashcardPointsEle.classList.add('text');
+        let flashcardElement = this.createFlashcardElement(flashcard);
     
-        flashcardQuestionTextEle.textContent = flashcard.questionText;
-        flashcardAnswerTextEle.textContent = flashcard.answerText;
-        flashcardPointsEle.textContent = flashcard.points;
+        itemContainer.appendChild(flashcardElement);
 
-        flashcardEle.appendChild(flashcardQuestionTextEle);
-        flashcardEle.appendChild(flashcardPointsEle);
-
-        this.itemContainer.appendChild(flashcardEle);
-
-        flashcardEle.addEventListener("click", () => {
-            if (flashcardEle.classList.contains('not-flipped')) {
-                flashcardEle.replaceChild(flashcardAnswerTextEle, flashcardQuestionTextEle);
-                flashcardEle.classList.replace('not-flipped', 'flipped');
+        flashcardElement.addEventListener("click", () => {
+            if (flashcardElement.classList.contains('not-flipped')) {
+                flashcardElement.replaceChild(document.getElementById('answer-text'),
+                                                document.getElementById('question-text'));
+                flashcardElement.classList.replace('not-flipped', 'flipped');
                 
             }
-            else if (flashcardEle.classList.contains('flipped')) {
-                flashcardEle.replaceChild(flashcardQuestionTextEle, flashcardAnswerTextEle);
-                flashcardEle.classList.replace('flipped', 'not-flipped');
+            else if (flashcardElement.classList.contains('flipped')) {
+                flashcardElement.replaceChild(document.getElementById('question-text'),
+                                                document.getElementById('answer-text'));
+                flashcardElement.classList.replace('flipped', 'not-flipped');
                 
             }
         })
 
-        this.flashcardElements.push(flashcardEle); 
+        this.flashcardElements.push(flashcardElement); 
     } )
 
-    console.log(this.flashcards);
     const multipleChoiceRenderer = new MultipleChoiceRenderer(this.flashcards);
     
     
+}
+
+createFlashcardElement(flashcard) {
+    const flashcardElement = document.createElement('div');
+    flashcardElement.classList.add('flashcard');
+    flashcardElement.classList.add('not-flipped');
+    
+
+    flashcardElement.innerHTML += `<p class="text" id="question-text">${flashcard.questionText}</p>`
+    flashcardElement.innerHTML += `<p class="text" id="answer-text">${flashcard.answerText}</p>`
+    flashcardElement.innerHTML += `<p class="text" id="points">${flashcard.points}</p>`
+
+    return flashcardElement
 }
 }
