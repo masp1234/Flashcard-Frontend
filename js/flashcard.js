@@ -7,12 +7,6 @@ constructor() {
 flashcardElements = []
 flashcards = []
 
-
-// Find ud af hvorfor flashcards forsvinder efter 2 klik. 
-// Først går de fra not-flipped til flipped, og derefter bliver de væk når man klikker på dem.
-// Prøv at debug
-// note: både spørgsmål og svar vises på samme tid. Tjek tidligere kode på github
-
 getFlashcards = deck => {
     itemContainer.replaceChildren();
 
@@ -25,18 +19,7 @@ getFlashcards = deck => {
         itemContainer.appendChild(flashcardElement);
 
         flashcardElement.addEventListener("click", () => {
-            if (flashcardElement.classList.contains('not-flipped')) {
-                flashcardElement.replaceChild(document.getElementById('answer-text'),
-                                                document.getElementById('question-text'));
-                flashcardElement.classList.replace('not-flipped', 'flipped');
-                
-            }
-            else if (flashcardElement.classList.contains('flipped')) {
-                flashcardElement.replaceChild(document.getElementById('question-text'),
-                                                document.getElementById('answer-text'));
-                flashcardElement.classList.replace('flipped', 'not-flipped');
-                
-            }
+            this.flipFlashcard(flashcardElement, flashcard);
         })
 
         this.flashcardElements.push(flashcardElement); 
@@ -49,14 +32,28 @@ getFlashcards = deck => {
 
 createFlashcardElement(flashcard) {
     const flashcardElement = document.createElement('div');
+    const flashcardContentElement = document.createElement('div');
+    flashcardContentElement.classList.add('flashcard-content');
+    flashcardElement.appendChild(flashcardContentElement);
     flashcardElement.classList.add('flashcard');
     flashcardElement.classList.add('not-flipped');
     
-
-    flashcardElement.innerHTML += `<p class="text" id="question-text">${flashcard.questionText}</p>`
-    flashcardElement.innerHTML += `<p class="text" id="answer-text">${flashcard.answerText}</p>`
-    flashcardElement.innerHTML += `<p class="text" id="points">${flashcard.points}</p>`
-
+    flashcardContentElement.innerHTML += `<p class="text" id="question-text">${flashcard.questionText}</p>`
     return flashcardElement
+}
+
+flipFlashcard(flashcardElement, flashcard) {
+    const flashcardContentElement = flashcardElement.querySelector('.flashcard-content');
+
+    if (flashcardElement.classList.contains('not-flipped')) {
+        flashcardContentElement.innerHTML = `<p class="text">${flashcard.answerText}</p>`;
+        flashcardElement.classList.replace('not-flipped', 'flipped');
+        
+    }
+    else if (flashcardElement.classList.contains('flipped')) {
+        flashcardContentElement.innerHTML = `<p class="text">${flashcard.questionText}</p>`;
+        flashcardElement.classList.replace('flipped', 'not-flipped');
+        
+    }
 }
 }
